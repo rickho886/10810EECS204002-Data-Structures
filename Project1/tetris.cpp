@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
 using namespace std;
-int row, col;
-int lose;
+int row, col, lose;
+int tetromino_row, tetromino_col;
 int arr[41][16];
 
 int T1[2][3] = {{1,1,1},
@@ -80,491 +80,245 @@ void checkLose();
 
 int searchMatrix(int c, int type) {
     int i, j, k;
-    int tetris_row, tetris_col;
-    int flag = 0;
     if(type == 1) {
-        tetris_row = 2;
-        tetris_col = 3;
-        if(tetris_col + c > col) {
-            return -1;
-        }
+        tetromino_row = 2;
+        tetromino_col = 3;
         for(i = 1; i < row; i++) {
-            for(j = 0; j < tetris_row; j++) {
-                for(k = 0; k < tetris_col; k++) {
+            for(j = 0; j < tetromino_row; j++) {
+                for(k = 0; k < tetromino_col; k++) {
                     if(arr[i+j][c+k] + T1[j][k] > 1) {
-                        flag = 1;
-                        cout << "aneh : " << i << " " << j << " " << k << endl;
-                        break;
+                        return i-1;
                     }
                 }
-                if(flag) break;
-                /*if(arr[i+j][c+k-1]) {
-                    cout << i << " " << c << endl;
-                    cout << "aneh wew";
-                    flag = 1;
-                    break;
-                }*/
-            }
-            if(flag) {
-                cout << i << " " << j << " " << endl;
-                return i-1;
             }
         }
     } else if(type == 2) {
-        tetris_row = 3;
-        tetris_col = 2;
-        if(tetris_col + c > col) {
-            return -1;
-        }
+        tetromino_row = 3;
+        tetromino_col = 2;
         for(i = 1; i < row; i++) {
-            for(j = 0; j < tetris_row; j++) {
-                for(k = 0; k < tetris_col; k++) {
+            for(j = 0; j < tetromino_row; j++) {
+                for(k = 0; k < tetromino_col; k++) {
                     if(arr[i+j][c+k] + T2[j][k] > 1) {
-                        flag = 1;
-                        cout << "aneh : " << i << " " << j << " " << k << endl;
-                        break;
+                        return i-1;
                     }
                 }
-                if(flag) break;
-                /*if(arr[i+j][c+k-1]) {
-                    cout << i << " " << c << endl;
-                    cout << "aneh wew";
-                    flag = 1;
-                    break;
-                }*/
-            }
-            if(flag) {
-                cout << i << " " << j << " " << endl;
-                return i-1;
             }
         }
     } else if(type == 3) {
-        tetris_row = 2;
-        tetris_col = 3;
-        if(tetris_col + c > col) {
-            return -1;
-        }
+        tetromino_row = 2;
+        tetromino_col = 3;
         for(i = 1; i < row; i++) {
-            for(j = 0; j < tetris_row; j++) {
-                for(k = 0; k < tetris_col; k++) {
+            for(j = 0; j < tetromino_row; j++) {
+                for(k = 0; k < tetromino_col; k++) {
                     if(arr[i+j][c+k] + T3[j][k] > 1) {
-                        flag = 1;
-                        cout << "aneh : " << i << " " << j << " " << k << endl;
-                        break;
+                        return i-1;
                     }
                 }
-                if(flag) break;
-                /*if(arr[i+j][c+k-1]) {
-                    cout << i << " " << c << endl;
-                    cout << "aneh wew";
-                    flag = 1;
-                    break;
-                }*/
-            }
-            if(flag) {
-                cout << i << " " << j << " " << endl;
-                return i-1;
             }
         }
     } else if(type == 4) {
-        tetris_row = 3;
-        tetris_col = 2;
-        if(tetris_col + c > col) {
-            return -1;
-        }
+        tetromino_row = 3;
+        tetromino_col = 2;
         for(i = 1; i < row; i++) {
-            for(j = 0; j < tetris_row; j++) {
-                for(k = 0; k < tetris_col; k++) {
+            for(j = 0; j < tetromino_row; j++) {
+                for(k = 0; k < tetromino_col; k++) {
                     if(arr[i+j][c+k] + T4[j][k] > 1) {
-                        flag = 1;
-                        cout << "aneh : " << i << " " << j << " " << k << endl;
-                        break;
+                        return i-1;
                     }
                 }
-                if(flag) break;
-                /*if(arr[i+j][c+k-1]) {
-                    cout << i << " " << c << endl;
-                    cout << "aneh wew";
-                    flag = 1;
-                    break;
-                }*/
-            }
-            if(flag) {
-                cout << i << " " << j << " " << endl;
-                return i-1;
             }
         }
     } else if(type == 5) {
-        tetris_row = 3;
-        tetris_col = 2;
-        if(tetris_col + c > col) {
-            return -1;
-        }
+        tetromino_row = 3;
+        tetromino_col = 2;
         for(i = 1; i < row; i++) {
-            for(j = 0; j < tetris_row; j++) {
-                for(k = 0; k < tetris_col; k++) {
+            for(j = 0; j < tetromino_row; j++) {
+                for(k = 0; k < tetromino_col; k++) {
                     if(arr[i+j][c+k] + L1[j][k] > 1) {
-                        flag = 1;
-                        cout << "aneh : " << i << " " << j << " " << k << endl;
-                        break;
+                        return i-1;
                     }
                 }
-                if(flag) break;
-            }
-            if(flag) {
-                cout << i << " " << j << " " << endl;
-                return i-1;
             }
         }
     } else if(type == 6) {
-        tetris_row = 2;
-        tetris_col = 3;
-        if(tetris_col + c > col) {
-            return -1;
-        }
+        tetromino_row = 2;
+        tetromino_col = 3;
         for(i = 1; i < row; i++) {
-            for(j = 0; j < tetris_row; j++) {
-                for(k = 0; k < tetris_col; k++) {
+            for(j = 0; j < tetromino_row; j++) {
+                for(k = 0; k < tetromino_col; k++) {
                     if(arr[i+j][c+k] + L2[j][k] > 1) {
-                        flag = 1;
-                        cout << "aneh : " << i << " " << j << " " << k << endl;
-                        break;
+                        return i-1;
                     }
                 }
-                if(flag) break;
-            }
-            if(flag) {
-                cout << i << " " << j << " " << endl;
-                return i-1;
             }
         }
     } else if(type == 7) {
-        tetris_row = 3;
-        tetris_col = 2;
-        if(tetris_col + c > col) {
-            return -1;
-        }
+        tetromino_row = 3;
+        tetromino_col = 2;
         for(i = 1; i < row; i++) {
-            for(j = 0; j < tetris_row; j++) {
-                for(k = 0; k < tetris_col; k++) {
+            for(j = 0; j < tetromino_row; j++) {
+                for(k = 0; k < tetromino_col; k++) {
                     if(arr[i+j][c+k] + L3[j][k] > 1) {
-                        flag = 1;
-                        cout << "aneh : " << i << " " << j << " " << k << endl;
-                        break;
+                        return i-1;
                     }
                 }
-                if(flag) break;
-            }
-            if(flag) {
-                cout << i << " " << j << " " << endl;
-                return i-1;
             }
         }
     } else if(type == 8) {
-        tetris_row = 2;
-        tetris_col = 3;
-        if(tetris_col + c > col) {
-            return -1;
-        }
+        tetromino_row = 2;
+        tetromino_col = 3;
         for(i = 1; i < row; i++) {
-            for(j = 0; j < tetris_row; j++) {
-                for(k = 0; k < tetris_col; k++) {
+            for(j = 0; j < tetromino_row; j++) {
+                for(k = 0; k < tetromino_col; k++) {
                     if(arr[i+j][c+k] + L4[j][k] > 1) {
-                        flag = 1;
-                        cout << "aneh : " << i << " " << j << " " << k << endl;
-                        break;
+                        return i-1;
                     }
                 }
-                if(flag) break;
-            }
-            if(flag) {
-                cout << i << " " << j << " " << endl;
-                return i-1;
             }
         }
     } else if(type == 9) {
-        tetris_row = 3;
-        tetris_col = 2;
-        if(tetris_col + c > col) {
-            return -1;
-        }
+        tetromino_row = 3;
+        tetromino_col = 2;
         for(i = 1; i < row; i++) {
-            for(j = 0; j < tetris_row; j++) {
-                for(k = 0; k < tetris_col; k++) {
+            for(j = 0; j < tetromino_row; j++) {
+                for(k = 0; k < tetromino_col; k++) {
                     if(arr[i+j][c+k] + J1[j][k] > 1) {
-                        flag = 1;
-                        cout << "aneh : " << i << " " << j << " " << k << endl;
-                        break;
+                        return i-1;
                     }
                 }
-                if(flag) break;
-            }
-            if(flag) {
-                cout << i << " " << j << " " << endl;
-                return i-1;
             }
         }
     } else if(type == 10) {
-        tetris_row = 2;
-        tetris_col = 3;
-        if(tetris_col + c > col) {
-            return -1;
-        }
+        tetromino_row = 2;
+        tetromino_col = 3;
         for(i = 1; i < row; i++) {
-            for(j = 0; j < tetris_row; j++) {
-                for(k = 0; k < tetris_col; k++) {
+            for(j = 0; j < tetromino_row; j++) {
+                for(k = 0; k < tetromino_col; k++) {
                     if(arr[i+j][c+k] + J2[j][k] > 1) {
-                        flag = 1;
-                        cout << "aneh : " << i << " " << j << " " << k << endl;
-                        break;
+                        return i-1;
                     }
                 }
-                if(flag) break;
-            }
-            if(flag) {
-                cout << i << " " << j << " " << endl;
-                return i-1;
             }
         }
     } else if(type == 11) {
-        tetris_row = 3;
-        tetris_col = 2;
-        if(tetris_col + c > col) {
-            return -1;
-        }
+        tetromino_row = 3;
+        tetromino_col = 2;
         for(i = 1; i < row; i++) {
-            for(j = 0; j < tetris_row; j++) {
-                for(k = 0; k < tetris_col; k++) {
+            for(j = 0; j < tetromino_row; j++) {
+                for(k = 0; k < tetromino_col; k++) {
                     if(arr[i+j][c+k] + J3[j][k] > 1) {
-                        flag = 1;
-                        cout << "aneh : " << i << " " << j << " " << k << endl;
-                        break;
+                        return i-1;
                     }
                 }
-                if(flag) break;
-            }
-            if(flag) {
-                cout << i << " " << j << " " << endl;
-                return i-1;
             }
         }
     } else if(type == 12) {
-        tetris_row = 2;
-        tetris_col = 3;
-        if(tetris_col + c > col) {
-            return -1;
-        }
+        tetromino_row = 2;
+        tetromino_col = 3;
         for(i = 1; i < row; i++) {
-            for(j = 0; j < tetris_row; j++) {
-                for(k = 0; k < tetris_col; k++) {
+            for(j = 0; j < tetromino_row; j++) {
+                for(k = 0; k < tetromino_col; k++) {
                     if(arr[i+j][c+k] + J4[j][k] > 1) {
-                        flag = 1;
-                        cout << "aneh : " << i << " " << j << " " << k << endl;
-                        break;
+                        return i-1;
                     }
                 }
-                if(flag) break;
-            }
-            if(flag) {
-                cout << i << " " << j << " " << endl;
-                return i-1;
             }
         }
     } else if(type == 13) {
-        tetris_row = 2;
-        tetris_col = 3;
-        if(tetris_col + c > col) {
-            return -1;
-        }
+        tetromino_row = 2;
+        tetromino_col = 3;
         for(i = 1; i < row; i++) {
-            for(j = 0; j < tetris_row; j++) {
-                for(k = 0; k < tetris_col; k++) {
+            for(j = 0; j < tetromino_row; j++) {
+                for(k = 0; k < tetromino_col; k++) {
                     if(arr[i+j][c+k] + S1[j][k] > 1) {
-                        flag = 1;
-                        cout << "aneh : " << i << " " << j << " " << k << endl;
-                        break;
+                        return i-1;
                     }
                 }
-                if(flag) break;
-                /*if(arr[i+j][c+k-1]) {
-                    cout << i << " " << c << endl;
-                    cout << "aneh wew";
-                    flag = 1;
-                    break;
-                }*/
-            }
-            if(flag) {
-                cout << i << " " << j << " " << endl;
-                return i-1;
             }
         }
     } else if(type == 14) {
-        tetris_row = 3;
-        tetris_col = 2;
-        if(tetris_col + c > col) {
-            return -1;
-        }
+        tetromino_row = 3;
+        tetromino_col = 2;
         for(i = 1; i < row; i++) {
-            for(j = 0; j < tetris_row; j++) {
-                for(k = 0; k < tetris_col; k++) {
+            for(j = 0; j < tetromino_row; j++) {
+                for(k = 0; k < tetromino_col; k++) {
                     if(arr[i+j][c+k] + S2[j][k] > 1) {
-                        flag = 1;
-                        cout << "aneh : " << i << " " << j << " " << k << endl;
-                        break;
+                        return i-1;
                     }
                 }
-                if(flag) break;
-                /*if(arr[i+j][c+k-1]) {
-                    cout << i << " " << c << endl;
-                    cout << "aneh wew";
-                    flag = 1;
-                    break;
-                }*/
-            }
-            if(flag) {
-                cout << i << " " << j << " " << endl;
-                return i-1;
             }
         }
     } else if(type == 15) {
-        tetris_row = 2;
-        tetris_col = 3;
-        if(tetris_col + c > col) {
-            return -1;
-        }
+        tetromino_row = 2;
+        tetromino_col = 3;
         for(i = 1; i < row; i++) {
-            for(j = 0; j < tetris_row; j++) {
-                for(k = 0; k < tetris_col; k++) {
+            for(j = 0; j < tetromino_row; j++) {
+                for(k = 0; k < tetromino_col; k++) {
                     if(arr[i+j][c+k] + Z1[j][k] > 1) {
-                        flag = 1;
-                        cout << "aneh : " << i << " " << j << " " << k << endl;
-                        break;
+                        return i-1;
                     }
                 }
-                if(flag) break;
-                /*if(arr[i+j][c+k-1]) {
-                    cout << i << " " << c << endl;
-                    cout << "aneh wew";
-                    flag = 1;
-                    break;
-                }*/
-            }
-            if(flag) {
-                cout << i << " " << j << " " << endl;
-                return i-1;
             }
         }
     } else if(type == 16) {
-        tetris_row = 3;
-        tetris_col = 2;
-        if(tetris_col + c > col) {
-            return -1;
-        }
+        tetromino_row = 3;
+        tetromino_col = 2;
         for(i = 1; i < row; i++) {
-            for(j = 0; j < tetris_row; j++) {
-                for(k = 0; k < tetris_col; k++) {
+            for(j = 0; j < tetromino_row; j++) {
+                for(k = 0; k < tetromino_col; k++) {
                     if(arr[i+j][c+k] + Z2[j][k] > 1) {
-                        flag = 1;
-                        cout << "aneh : " << i << " " << j << " " << k << endl;
-                        break;
+                        return i-1;
                     }
                 }
-                if(flag) break;
-                /*if(arr[i+j][c+k-1]) {
-                    cout << i << " " << c << endl;
-                    cout << "aneh wew";
-                    flag = 1;
-                    break;
-                }*/
-            }
-            if(flag) {
-                cout << i << " " << j << " " << endl;
-                return i-1;
             }
         }
     } else if(type == 17) {
-        tetris_row = 4;
-        tetris_col = 1;
-        if(tetris_col + c > col) {
-            return -1;
-        }
+        tetromino_row = 4;
+        tetromino_col = 1;
         for(i = 1; i < row; i++) {
-            for(j = 0; j < tetris_row; j++) {
-                for(k = 0; k < tetris_col; k++) {
+            for(j = 0; j < tetromino_row; j++) {
+                for(k = 0; k < tetromino_col; k++) {
                     if(arr[i+j][c+k] + I1[j][k] > 1) {
-                        flag = 1;
-                        cout << "aneh : " << i << " " << j << " " << k << endl;
-                        break;
+                        return i-1;
                     }
                 }
-                if(flag) break;
                 if(arr[i+j][c+k-1]) {
-                    cout << i << " " << c << endl;
-                    cout << "aneh wew";
-                    flag = 1;
-                    break;
+                    return i-1;
                 }
-            }
-            if(flag) {
-                return i-1;
             }
         }
     } else if(type == 18) {
-        tetris_row = 1;
-        tetris_col = 4;
-        if(tetris_col + c > col) {
-            return -1;
-        }
+        tetromino_row = 1;
+        tetromino_col = 4;
         for(i = 1; i < row; i++) {
-            for(j = 0; j < tetris_row; j++) {
-                for(k = 0; k < tetris_col; k++) {
+            for(j = 0; j < tetromino_row; j++) {
+                for(k = 0; k < tetromino_col; k++) {
                     if(arr[i+j][c+k] + I2[j][k] > 1) {
-                        flag = 1;
-                        cout << "aneh : " << i << " " << j << " " << k << endl;
-                        break;
+                        return i-1;
                     }
                 }
-                if(flag) break;
                 if(arr[i+j][c+k-1]) {
-                    cout << i << " " << c << endl;
-                    cout << "aneh wew";
-                    flag = 1;
-                    break;
+                    return i-1;
                 }
-            }
-            if(flag) {
-                return i-1;
             }
         }
     } else if(type == 19) {
-        tetris_row = 2;
-        tetris_col = 2;
-        if(tetris_col + c > col) {
-            return -1;
-        }
+        tetromino_row = 2;
+        tetromino_col = 2;
         for(i = 1; i < row; i++) {
-            for(j = 0; j < tetris_row; j++) {
-                for(k = 0; k < tetris_col; k++) {
+            for(j = 0; j < tetromino_row; j++) {
+                for(k = 0; k < tetromino_col; k++) {
                     if(arr[i+j][c+k] + O[j][k] > 1) {
-                        flag = 1;
-                        cout << "aneh : " << i << " " << j << " " << k << endl;
-                        break;
+                        return i-1;
                     }
                 }
-                if(flag) break;
                 if(arr[i+j][c+k-1]) {
-                    cout << i << " " << c << endl;
-                    cout << "aneh wew";
-                    flag = 1;
-                    break;
+                    return i-1;
                 }
-            }
-            if(flag) {
-                return i-1;
             }
         }
     }
-    return i-tetris_row;
+    return i-tetromino_row;
 }
 
 void matrixPlacement(int c, int type) {
@@ -708,7 +462,7 @@ void printMatrix() {
     //freopen("tetris.final", "w", stdout);
     for(int i = 1; i < row; i++) {
         for(int j = 1; j < col; j++) {
-            cout << arr[i][j] << " ";
+            cout << arr[i][j];
         }
         cout << endl;
     }
