@@ -72,7 +72,7 @@ int O[2][2] = {{1,1},
                {1,1}};
 
 int searchMatrix(int c, int type);
-void checkMatrix();
+int checkMatrix();
 void eliminateLine(int i);
 void printMatrix();
 void matrixPlacement(int c, int type);
@@ -275,7 +275,7 @@ int searchMatrix(int c, int type) {
     } else if(type == 17) {
         tetromino_row = 4;
         tetromino_col = 1;
-        for(i = 1; i < row; i++) {
+        for(i = 0; i < row; i++) {
             for(j = 0; j < tetromino_row; j++) {
                 for(k = 0; k < tetromino_col; k++) {
                     if(arr[i+j][c+k] + I1[j][k] > 1) {
@@ -322,8 +322,8 @@ int searchMatrix(int c, int type) {
 }
 
 void matrixPlacement(int c, int type) {
-    int place = 0;
     int i = searchMatrix(c, type);
+    cout << i << endl;
     if(type == 1) {
         for(int j = 0; j < 2; j++) {
             for(int k = 0; k < 3; k++) {
@@ -332,7 +332,7 @@ void matrixPlacement(int c, int type) {
             }
         }
     } else if(type == 2) {
-        for(int j = 0; j < 3; j++) {
+        for(int j = 2; j >= 0; j--) {
             for(int k = 0; k < 2; k++) {
                 if(!(arr[i+j][c+k]))
                     arr[i+j][c+k] += T2[j][k];
@@ -437,9 +437,16 @@ void matrixPlacement(int c, int type) {
             }
         }
     } else if(type == 17) {
-        for(int j = 0; j < 4; j++) {
-            if(!(arr[i+j][c]))
+        for(int j = 3; j >= 0; j--) {
+                cout << i << " " << j << endl;
+            if(!(arr[i+j][c])) {
                 arr[i+j][c] += I1[j][0];
+                if(checkMatrix()) {
+                    i++;
+                }
+                printMatrix();
+                cout << endl;
+            }
         }
     } else if(type == 18) {
         for(int j = 0; j < 4; j++) {
@@ -454,7 +461,6 @@ void matrixPlacement(int c, int type) {
             }
         }
     }
-    checkMatrix();
     checkLose();
 }
 
@@ -476,7 +482,7 @@ void eliminateLine(int i) {
     }
 }
 
-void checkMatrix() {
+int checkMatrix() {
     int i;
     /*for(i = row-1; i > 1 ; i--) {
         int eliminate = 1;
@@ -501,13 +507,16 @@ void checkMatrix() {
         }
         if(eliminate) {
             eliminateLine(i);
+            return 1;
         }
     }
+    return 0;
 }
 
 void checkLose() {
     for(int i = 1; i < col; i++) {
         if(arr[0][i] == 1) {
+            //cout << arr[0][i] << " " << i << " " << endl;
             lose = 1;
         }
     }
