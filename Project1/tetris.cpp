@@ -73,6 +73,7 @@ int O[2][2] = {{1,1},
 
 int searchMatrix(int c, int type);
 int checkEliminateMatrix();
+int checkForPlacement(int r, int c, int type);
 void eliminateLine(int i);
 void printMatrix();
 void matrixPlacement(int c, int type);
@@ -275,7 +276,7 @@ int searchMatrix(int c, int type) {
     } else if(type == 17) {
         tetromino_row = 4;
         tetromino_col = 1;
-        for(i = -1; i < row; i++) {
+        for(i = 0; i < row; i++) {
             for(j = 0; j < tetromino_row; j++) {
                 for(k = 0; k < tetromino_col; k++) {
                     if(arr[i+j][c+k] + I1[j][k] > 1) {
@@ -317,10 +318,17 @@ int searchMatrix(int c, int type) {
 
 void matrixPlacement(int c, int type) {
     int i = searchMatrix(c, type);
+    while(1) {
+        if(checkForPlacement(i, c, type)) {
+            break;
+        } else {
+            i--;
+        }
+    }
     if(type == 1) {
         for(int j = 1; j >= 0; j--) {
             for(int k = 2; k >= 0; k--) {
-                if(!(arr[i+j][c+k])) {
+                if(!(arr[i+j][c+k]) && (i+j > -1)) {
                     arr[i+j][c+k] += T1[j][k];
                     if(checkEliminateMatrix()) {
                         i++;
@@ -331,7 +339,7 @@ void matrixPlacement(int c, int type) {
     } else if(type == 2) {
         for(int j = 2; j >= 0; j--) {
             for(int k = 1; k >= 0; k--) {
-                if(!(arr[i+j][c+k])) {
+                if(!(arr[i+j][c+k]) && (i+j > -1) && (i+j > -1)) {
                     arr[i+j][c+k] += T2[j][k];
                     if(checkEliminateMatrix()) {
                         i++;
@@ -342,7 +350,7 @@ void matrixPlacement(int c, int type) {
     } else if(type == 3) {
         for(int j = 1; j >= 0; j--) {
             for(int k = 2; k >= 0; k--) {
-                if(!(arr[i+j][c+k])) {
+                if(!(arr[i+j][c+k]) && (i+j > -1)) {
                     arr[i+j][c+k] += T3[j][k];
                     if(checkEliminateMatrix()) {
                         i++;
@@ -353,7 +361,7 @@ void matrixPlacement(int c, int type) {
     } else if(type == 4) {
         for(int j = 2; j >= 0; j--) {
             for(int k = 1; k >= 0; k--) {
-                if(!(arr[i+j][c+k])) {
+                if(!(arr[i+j][c+k]) && (i+j > -1)) {
                     arr[i+j][c+k] += T4[j][k];
                     if(checkEliminateMatrix()) {
                         i++;
@@ -364,7 +372,7 @@ void matrixPlacement(int c, int type) {
     } else if(type == 5) {
         for(int j = 2; j >= 0; j--) {
             for(int k = 1; k >= 0; k--) {
-                if(!(arr[i+j][c+k])) {
+                if(!(arr[i+j][c+k]) && (i+j > -1)) {
                     arr[i+j][c+k] += L1[j][k];
                     if(checkEliminateMatrix()) {
                         i++;
@@ -375,7 +383,7 @@ void matrixPlacement(int c, int type) {
     } else if(type == 6) {
         for(int j = 1; j >= 0; j--) {
             for(int k = 2; k >= 0; k--) {
-                if(!(arr[i+j][c+k])) {
+                if(!(arr[i+j][c+k]) && (i+j > -1)) {
                     arr[i+j][c+k] += L2[j][k];
                     if(checkEliminateMatrix()) {
                         i++;
@@ -386,7 +394,7 @@ void matrixPlacement(int c, int type) {
     } else if(type == 7) {
         for(int j = 2; j >= 0; j--) {
             for(int k = 1; k >= 0; k--) {
-                if(!(arr[i+j][c+k])) {
+                if(!(arr[i+j][c+k]) && (i+j > -1)) {
                     arr[i+j][c+k] += L3[j][k];
                     if(checkEliminateMatrix()) {
                         i++;
@@ -397,7 +405,7 @@ void matrixPlacement(int c, int type) {
     } else if(type == 8) {
         for(int j = 1; j >= 0; j--) {
             for(int k = 2; k >= 0; k--) {
-                if(!(arr[i+j][c+k])) {
+                if(!(arr[i+j][c+k]) && (i+j > -1)) {
                     arr[i+j][c+k] += L4[j][k];
                     if(checkEliminateMatrix()) {
                         i++;
@@ -408,7 +416,7 @@ void matrixPlacement(int c, int type) {
     } else if(type == 9) {
         for(int j = 2; j >= 0; j--) {
             for(int k = 1; k >= 0; k--) {
-                if(!(arr[i+j][c+k])) {
+                if(!(arr[i+j][c+k]) && (i+j > -1)) {
                     arr[i+j][c+k] += J1[j][k];
                     if(checkEliminateMatrix()) {
                         i++;
@@ -419,7 +427,7 @@ void matrixPlacement(int c, int type) {
     } else if(type == 10) {
         for(int j = 1; j >= 0; j--) {
             for(int k = 2; k >= 0; k--) {
-                if(!(arr[i+j][c+k])) {
+                if(!(arr[i+j][c+k]) && (i+j > -1)) {
                     arr[i+j][c+k] += J2[j][k];
                     if(checkEliminateMatrix()) {
                         i++;
@@ -430,7 +438,7 @@ void matrixPlacement(int c, int type) {
     } else if(type == 11) {
         for(int j = 2; j >= 0; j--) {
             for(int k = 1; k >= 0; k--) {
-                if(!(arr[i+j][c+k])) {
+                if(!(arr[i+j][c+k]) && (i+j > -1)) {
                     arr[i+j][c+k] += J3[j][k];
                     if(checkEliminateMatrix()) {
                         i++;
@@ -441,7 +449,7 @@ void matrixPlacement(int c, int type) {
     } else if(type == 12) {
         for(int j = 1; j >= 0; j--) {
             for(int k = 2; k >= 0; k--) {
-                if(!(arr[i+j][c+k])) {
+                if(!(arr[i+j][c+k]) && (i+j > -1)) {
                     arr[i+j][c+k] += J4[j][k];
                     if(checkEliminateMatrix()) {
                         i++;
@@ -452,7 +460,7 @@ void matrixPlacement(int c, int type) {
     } else if(type == 13) {
         for(int j = 1; j >= 0; j--) {
             for(int k = 2; k >= 0; k--){
-                if(!(arr[i+j][c+k])) {
+                if(!(arr[i+j][c+k]) && (i+j > -1)) {
                     arr[i+j][c+k] += S1[j][k];
                     if(checkEliminateMatrix()) {
                         i++;
@@ -463,7 +471,7 @@ void matrixPlacement(int c, int type) {
     } else if(type == 14) {
         for(int j = 2; j >= 0; j--) {
             for(int k = 1; k >= 0; k--) {
-                if(!(arr[i+j][c+k])) {
+                if(!(arr[i+j][c+k]) && (i+j > -1)) {
                     arr[i+j][c+k] += S2[j][k];
                     if(checkEliminateMatrix()) {
                         i++;
@@ -474,7 +482,7 @@ void matrixPlacement(int c, int type) {
     } else if(type == 15) {
         for(int j = 1; j >= 0; j--) {
             for(int k = 2; k >= 0; k--) {
-                if(!(arr[i+j][c+k])) {
+                if(!(arr[i+j][c+k]) && (i+j > -1)) {
                     arr[i+j][c+k] += Z1[j][k];
                     if(checkEliminateMatrix()) {
                         i++;
@@ -485,7 +493,7 @@ void matrixPlacement(int c, int type) {
     } else if(type == 16) {
         for(int j = 2; j >= 0; j--) {
             for(int k = 1; k >= 0; k--) {
-                if(!(arr[i+j][c+k])) {
+                if(!(arr[i+j][c+k]) && (i+j > -1)) {
                     arr[i+j][c+k] += Z2[j][k];
                     if(checkEliminateMatrix()) {
                         i++;
@@ -494,13 +502,9 @@ void matrixPlacement(int c, int type) {
             }
         }
     } else if(type == 17) {
-        cout << i << endl;
         for(int j = 3; j >= 0; j--) {
-            cout << i+j << endl;
-            if(!(arr[i+j][c]) && (i+j > -2)) {
+            if(!(arr[i+j][c]) && (i+j > -1)) {
                 arr[i+j][c] += I1[j][0];
-                printMatrix();
-                cout << endl;
                 if(checkEliminateMatrix()) {
                     i++;
                 }
@@ -508,7 +512,7 @@ void matrixPlacement(int c, int type) {
         }
     } else if(type == 18) {
         for(int j = 3; j >= 0; j--) {
-            if(!(arr[i][c+j])) {
+            if(!(arr[i][c+j]) && (i+j > -1)) {
                 arr[i][c+j] += I2[0][j];
                 if(checkEliminateMatrix()) {
                     i++;
@@ -518,7 +522,7 @@ void matrixPlacement(int c, int type) {
     } else if(type == 19) {
         for(int j = 1; j >= 0; j--) {
             for(int k = 1; k >= 0; k--) {
-                if(!(arr[i+j][c+k])) {
+                if(!(arr[i+j][c+k]) && (i+j > -1)) {
                     arr[i+j][c+k] += O[j][k];
                     if(checkEliminateMatrix()) {
                         i++;
@@ -546,6 +550,202 @@ void eliminateLine(int i) {
             arr[j][k] = arr[j-1][k];
         }
     }
+}
+
+int checkForPlacement(int r, int c, int type) {
+    int j, k;
+    if(type == 1) {
+        tetromino_row = 2;
+        tetromino_col = 3;
+        for(j = 0; j < tetromino_row; j++) {
+            for(k = 0; k < tetromino_col; k++) {
+                if(arr[r+j][c+k] + T1[j][k] > 1) {
+                    return 0;
+                }
+            }
+        }
+    } else if(type == 2) {
+        tetromino_row = 3;
+        tetromino_col = 2;
+        for(j = 0; j < tetromino_row; j++) {
+            for(k = 0; k < tetromino_col; k++) {
+                if(arr[r+j][c+k] + T2[j][k] > 1) {
+                    return 0;
+                }
+            }
+        }
+    } else if(type == 3) {
+        tetromino_row = 2;
+        tetromino_col = 3;
+        for(j = 0; j < tetromino_row; j++) {
+            for(k = 0; k < tetromino_col; k++) {
+                if(arr[r+j][c+k] + T3[j][k] > 1) {
+                    return 0;
+                }
+            }
+        }
+    } else if(type == 4) {
+        tetromino_row = 3;
+        tetromino_col = 2;
+        for(j = 0; j < tetromino_row; j++) {
+            for(k = 0; k < tetromino_col; k++) {
+                if(arr[r+j][c+k] + T4[j][k] > 1) {
+                    return 0;
+                }
+            }
+        }
+    } else if(type == 5) {
+        tetromino_row = 3;
+        tetromino_col = 2;
+        for(j = 0; j < tetromino_row; j++) {
+            for(k = 0; k < tetromino_col; k++) {
+                if(arr[r+j][c+k] + L1[j][k] > 1) {
+                    return 0;
+                }
+            }
+        }
+    } else if(type == 6) {
+        tetromino_row = 2;
+        tetromino_col = 3;
+        for(j = 0; j < tetromino_row; j++) {
+            for(k = 0; k < tetromino_col; k++) {
+                if(arr[r+j][c+k] + L2[j][k] > 1) {
+                    return 0;
+                }
+            }
+        }
+    } else if(type == 7) {
+        tetromino_row = 3;
+        tetromino_col = 2;
+        for(j = 0; j < tetromino_row; j++) {
+            for(k = 0; k < tetromino_col; k++) {
+                if(arr[r+j][c+k] + L3[j][k] > 1) {
+                    return 0;
+                }
+            }
+        }
+    } else if(type == 8) {
+        tetromino_row = 2;
+        tetromino_col = 3;
+        for(j = 0; j < tetromino_row; j++) {
+            for(k = 0; k < tetromino_col; k++) {
+                if(arr[r+j][c+k] + L4[j][k] > 1) {
+                    return 0;
+                }
+            }
+        }
+    } else if(type == 9) {
+        tetromino_row = 3;
+        tetromino_col = 2;
+        for(j = 0; j < tetromino_row; j++) {
+            for(k = 0; k < tetromino_col; k++) {
+                if(arr[r+j][c+k] + J1[j][k] > 1) {
+                    return 0;
+                }
+            }
+        }
+    } else if(type == 10) {
+        tetromino_row = 2;
+        tetromino_col = 3;
+        for(j = 0; j < tetromino_row; j++) {
+            for(k = 0; k < tetromino_col; k++) {
+                if(arr[r+j][c+k] + J2[j][k] > 1) {
+                    return 0;
+                }
+            }
+        }
+    } else if(type == 11) {
+        tetromino_row = 3;
+        tetromino_col = 2;
+        for(j = 0; j < tetromino_row; j++) {
+            for(k = 0; k < tetromino_col; k++) {
+                if(arr[r+j][c+k] + J3[j][k] > 1) {
+                    return 0;
+                }
+            }
+        }
+    } else if(type == 12) {
+        tetromino_row = 2;
+        tetromino_col = 3;
+        for(j = 0; j < tetromino_row; j++) {
+            for(k = 0; k < tetromino_col; k++) {
+                if(arr[r+j][c+k] + J4[j][k] > 1) {
+                    return 0;
+                }
+            }
+        }
+    } else if(type == 13) {
+        tetromino_row = 2;
+        tetromino_col = 3;
+        for(j = 0; j < tetromino_row; j++) {
+            for(k = 0; k < tetromino_col; k++) {
+                if(arr[r+j][c+k] + S1[j][k] > 1) {
+                    return 0;
+                }
+            }
+        }
+    } else if(type == 14) {
+        tetromino_row = 3;
+        tetromino_col = 2;
+        for(j = 0; j < tetromino_row; j++) {
+            for(k = 0; k < tetromino_col; k++) {
+                if(arr[r+j][c+k] + S2[j][k] > 1) {
+                    return 0;
+                }
+            }
+        }
+    } else if(type == 15) {
+        tetromino_row = 2;
+        tetromino_col = 3;
+        for(j = 0; j < tetromino_row; j++) {
+            for(k = 0; k < tetromino_col; k++) {
+                if(arr[r+j][c+k] + Z1[j][k] > 1) {
+                    return 0;
+                }
+            }
+        }
+    } else if(type == 16) {
+        tetromino_row = 3;
+        tetromino_col = 2;
+        for(j = 0; j < tetromino_row; j++) {
+            for(k = 0; k < tetromino_col; k++) {
+                if(arr[r+j][c+k] + Z2[j][k] > 1) {
+                    return 0;
+                }
+            }
+        }
+    } else if(type == 17) {
+        tetromino_row = 4;
+        tetromino_col = 1;
+        for(j = 0; j < tetromino_row; j++) {
+            for(k = 0; k < tetromino_col; k++) {
+                if(arr[r+j][c+k] + I1[j][k] > 1) {
+                    return 0;
+                }
+            }
+        }
+    } else if(type == 18) {
+        tetromino_row = 1;
+        tetromino_col = 4;
+        for(j = 0; j < tetromino_row; j++) {
+            for(k = 0; k < tetromino_col; k++) {
+                if(arr[r+j][c+k] + I2[j][k] > 1) {
+                    return 0;
+                }
+            }
+        }
+    } else if(type == 19) {
+        tetromino_row = 2;
+        tetromino_col = 2;
+        for(j = 0; j < tetromino_row; j++) {
+            for(k = 0; k < tetromino_col; k++) {
+                if(arr[r+j][c+k] + O[j][k] > 1) {
+                    return 0;
+                }
+            }
+        }
+    }
+    return 1;
 }
 
 int checkEliminateMatrix() {
