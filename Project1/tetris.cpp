@@ -535,7 +535,7 @@ void matrixPlacement(int c, int type) {
 }
 
 void printMatrix() {
-    //freopen("tetris.final", "w", stdout);
+    freopen("Tetris.output", "w", stdout);
     for(int i = 1; i < row; i++) {
         for(int j = 1; j < col; j++) {
             cout << arr[i][j];
@@ -788,8 +788,6 @@ int main()
         cin >> com;
         if(com == "End") {
             break;
-        } else if(com == "print") {
-            printMatrix();
         } else {
             cin >> c;
         }
