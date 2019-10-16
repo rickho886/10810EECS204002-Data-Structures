@@ -73,7 +73,7 @@ int O[2][2] = {{1,1},
 
 int searchMatrix(int c, int type);
 int checkEliminateMatrix();
-int checkForPlacement(int r, int c, int type);
+//int checkForPlacement(int r, int c, int type);
 void eliminateLine(int i);
 void printMatrix();
 void matrixPlacement(int c, int type);
@@ -87,7 +87,11 @@ int searchMatrix(int c, int type) {
         for(i = 0; i < row; i++) {
             for(j = 0; j < tetromino_row; j++) {
                 for(k = 0; k < tetromino_col; k++) {
+                    if(i+j > row-1) {
+                        return i-1;
+                    }
                     if(arr[i+j][c+k] + T1[j][k] > 1) {
+
                         return i-1;
                     }
                 }
@@ -99,6 +103,9 @@ int searchMatrix(int c, int type) {
         for(i = 0; i < row; i++) {
             for(j = 0; j < tetromino_row; j++) {
                 for(k = 0; k < tetromino_col; k++) {
+                    if(i+j > row-1) {
+                        return i-1;
+                    }
                     if(arr[i+j][c+k] + T2[j][k] > 1) {
                         return i-1;
                     }
@@ -111,6 +118,9 @@ int searchMatrix(int c, int type) {
         for(i = 0; i < row; i++) {
             for(j = 0; j < tetromino_row; j++) {
                 for(k = 0; k < tetromino_col; k++) {
+                    if(i+j > row-1) {
+                        return i-1;
+                    }
                     if(arr[i+j][c+k] + T3[j][k] > 1) {
                         return i-1;
                     }
@@ -123,6 +133,9 @@ int searchMatrix(int c, int type) {
         for(i = 0; i < row; i++) {
             for(j = 0; j < tetromino_row; j++) {
                 for(k = 0; k < tetromino_col; k++) {
+                    if(i+j > row-1) {
+                        return i-1;
+                    }
                     if(arr[i+j][c+k] + T4[j][k] > 1) {
                         return i-1;
                     }
@@ -135,6 +148,9 @@ int searchMatrix(int c, int type) {
         for(i = 0; i < row; i++) {
             for(j = 0; j < tetromino_row; j++) {
                 for(k = 0; k < tetromino_col; k++) {
+                    if(i+j > row-1) {
+                        return i-1;
+                    }
                     if(arr[i+j][c+k] + L1[j][k] > 1) {
                         return i-1;
                     }
@@ -147,6 +163,9 @@ int searchMatrix(int c, int type) {
         for(i = 0; i < row; i++) {
             for(j = 0; j < tetromino_row; j++) {
                 for(k = 0; k < tetromino_col; k++) {
+                    if(i+j > row-1) {
+                        return i-1;
+                    }
                     if(arr[i+j][c+k] + L2[j][k] > 1) {
                         return i-1;
                     }
@@ -159,6 +178,9 @@ int searchMatrix(int c, int type) {
         for(i = 0; i < row; i++) {
             for(j = 0; j < tetromino_row; j++) {
                 for(k = 0; k < tetromino_col; k++) {
+                    if(i+j > row-1) {
+                        return i-1;
+                    }
                     if(arr[i+j][c+k] + L3[j][k] > 1) {
                         return i-1;
                     }
@@ -171,6 +193,9 @@ int searchMatrix(int c, int type) {
         for(i = 0; i < row; i++) {
             for(j = 0; j < tetromino_row; j++) {
                 for(k = 0; k < tetromino_col; k++) {
+                    if(i+j > row-1) {
+                        return i-1;
+                    }
                     if(arr[i+j][c+k] + L4[j][k] > 1) {
                         return i-1;
                     }
@@ -183,6 +208,9 @@ int searchMatrix(int c, int type) {
         for(i = 0; i < row; i++) {
             for(j = 0; j < tetromino_row; j++) {
                 for(k = 0; k < tetromino_col; k++) {
+                    if(i+j > row-1) {
+                        return i-1;
+                    }
                     if(arr[i+j][c+k] + J1[j][k] > 1) {
                         return i-1;
                     }
@@ -195,6 +223,9 @@ int searchMatrix(int c, int type) {
         for(i = 0; i < row; i++) {
             for(j = 0; j < tetromino_row; j++) {
                 for(k = 0; k < tetromino_col; k++) {
+                    if(i+j > row-1) {
+                        return i-1;
+                    }
                     if(arr[i+j][c+k] + J2[j][k] > 1) {
                         return i-1;
                     }
@@ -207,6 +238,9 @@ int searchMatrix(int c, int type) {
         for(i = 0; i < row; i++) {
             for(j = 0; j < tetromino_row; j++) {
                 for(k = 0; k < tetromino_col; k++) {
+                    if(i+j > row-1) {
+                        return i-1;
+                    }
                     if(arr[i+j][c+k] + J3[j][k] > 1) {
                         return i-1;
                     }
@@ -219,6 +253,9 @@ int searchMatrix(int c, int type) {
         for(i = 0; i < row; i++) {
             for(j = 0; j < tetromino_row; j++) {
                 for(k = 0; k < tetromino_col; k++) {
+                    if(i+j > row-1) {
+                        return i-1;
+                    }
                     if(arr[i+j][c+k] + J4[j][k] > 1) {
                         return i-1;
                     }
@@ -231,6 +268,9 @@ int searchMatrix(int c, int type) {
         for(i = 0; i < row; i++) {
             for(j = 0; j < tetromino_row; j++) {
                 for(k = 0; k < tetromino_col; k++) {
+                    if(i+j > row-1) {
+                        return i-1;
+                    }
                     if(arr[i+j][c+k] + S1[j][k] > 1) {
                         return i-1;
                     }
@@ -243,6 +283,9 @@ int searchMatrix(int c, int type) {
         for(i = 0; i < row; i++) {
             for(j = 0; j < tetromino_row; j++) {
                 for(k = 0; k < tetromino_col; k++) {
+                    if(i+j > row-1) {
+                        return i-1;
+                    }
                     if(arr[i+j][c+k] + S2[j][k] > 1) {
                         return i-1;
                     }
@@ -255,6 +298,9 @@ int searchMatrix(int c, int type) {
         for(i = 0; i < row; i++) {
             for(j = 0; j < tetromino_row; j++) {
                 for(k = 0; k < tetromino_col; k++) {
+                    if(i+j > row-1) {
+                        return i-1;
+                    }
                     if(arr[i+j][c+k] + Z1[j][k] > 1) {
                         return i-1;
                     }
@@ -267,6 +313,9 @@ int searchMatrix(int c, int type) {
         for(i = 0; i < row; i++) {
             for(j = 0; j < tetromino_row; j++) {
                 for(k = 0; k < tetromino_col; k++) {
+                    if(i+j > row-1) {
+                        return i-1;
+                    }
                     if(arr[i+j][c+k] + Z2[j][k] > 1) {
                         return i-1;
                     }
@@ -279,6 +328,9 @@ int searchMatrix(int c, int type) {
         for(i = 0; i < row; i++) {
             for(j = 0; j < tetromino_row; j++) {
                 for(k = 0; k < tetromino_col; k++) {
+                    if(i+j > row-1) {
+                        return i-1;
+                    }
                     if(arr[i+j][c+k] + I1[j][k] > 1) {
                         return i-1;
                     }
@@ -294,6 +346,9 @@ int searchMatrix(int c, int type) {
         for(i = 0; i < row; i++) {
             for(j = 0; j < tetromino_row; j++) {
                 for(k = 0; k < tetromino_col; k++) {
+                    if(i+j > row-1) {
+                        return i-1;
+                    }
                     if(arr[i+j][c+k] + I2[j][k] > 1) {
                         return i-1;
                     }
@@ -306,6 +361,9 @@ int searchMatrix(int c, int type) {
         for(i = 0; i < row; i++) {
             for(j = 0; j < tetromino_row; j++) {
                 for(k = 0; k < tetromino_col; k++) {
+                    if(i+j > row-1) {
+                        return i-1;
+                    }
                     if(arr[i+j][c+k] + O[j][k] > 1) {
                         return i-1;
                     }
@@ -318,13 +376,13 @@ int searchMatrix(int c, int type) {
 
 void matrixPlacement(int c, int type) {
     int i = searchMatrix(c, type);
-    while(1) {
+    /*while(1) {
         if(checkForPlacement(i, c, type)) {
             break;
         } else {
             i--;
         }
-    }
+    }*/
     if(type == 1) {
         for(int j = 1; j >= 0; j--) {
             for(int k = 2; k >= 0; k--) {
@@ -535,15 +593,16 @@ void matrixPlacement(int c, int type) {
 }
 
 void printMatrix() {
-    freopen("Tetris.output", "w", stdout);
+    freopen("Tetris.final", "w", stdout);
     for(int i = 1; i < row; i++) {
         for(int j = 1; j < col; j++) {
             cout << arr[i][j];
         }
         cout << endl;
     }
-}
+    fclose(stdout);
 
+}
 void eliminateLine(int i) {
     for(int j = i; j > 0; j--) {
         for(int k = 0; k < col; k++) {
@@ -552,7 +611,7 @@ void eliminateLine(int i) {
     }
 }
 
-int checkForPlacement(int r, int c, int type) {
+/*int checkForPlacement(int r, int c, int type) {
     int j, k;
     if(type == 1) {
         tetromino_row = 2;
@@ -746,7 +805,7 @@ int checkForPlacement(int r, int c, int type) {
         }
     }
     return 1;
-}
+}*/
 
 int checkEliminateMatrix() {
     int i;
