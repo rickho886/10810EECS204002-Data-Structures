@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 using namespace std;
-int row, col, lose;
+int row, col, lose = 0;;
 int tetromino_row, tetromino_col;
 int arr[41][16];
 
@@ -73,7 +73,6 @@ int O[2][2] = {{1,1},
 
 int searchMatrix(int c, int type);
 int checkEliminateMatrix();
-//int checkForPlacement(int r, int c, int type);
 void eliminateLine(int i);
 void printMatrix();
 void matrixPlacement(int c, int type);
@@ -91,7 +90,6 @@ int searchMatrix(int c, int type) {
                         return i-1;
                     }
                     if(arr[i+j][c+k] + T1[j][k] > 1) {
-
                         return i-1;
                     }
                 }
@@ -335,9 +333,6 @@ int searchMatrix(int c, int type) {
                         return i-1;
                     }
                 }
-                /*if(arr[i+j][c+k-1]) {
-                    return i-1;
-                }*/
             }
         }
     } else if(type == 18) {
@@ -376,13 +371,6 @@ int searchMatrix(int c, int type) {
 
 void matrixPlacement(int c, int type) {
     int i = searchMatrix(c, type);
-    /*while(1) {
-        if(checkForPlacement(i, c, type)) {
-            break;
-        } else {
-            i--;
-        }
-    }*/
     if(type == 1) {
         for(int j = 1; j >= 0; j--) {
             for(int k = 2; k >= 0; k--) {
@@ -397,7 +385,7 @@ void matrixPlacement(int c, int type) {
     } else if(type == 2) {
         for(int j = 2; j >= 0; j--) {
             for(int k = 1; k >= 0; k--) {
-                if(!(arr[i+j][c+k]) && (i+j > -1) && (i+j > -1)) {
+                if(!(arr[i+j][c+k]) && (i+j > -1)) {
                     arr[i+j][c+k] += T2[j][k];
                     if(checkEliminateMatrix()) {
                         i++;
@@ -560,18 +548,18 @@ void matrixPlacement(int c, int type) {
             }
         }
     } else if(type == 17) {
-        for(int j = 3; j >= 0; j--) {
-            if(!(arr[i+j][c]) && (i+j > -1)) {
-                arr[i+j][c] += I1[j][0];
+        for(int j = 3, k = 0; j >= 0; j--) {
+            if(!(arr[i+j][c+k]) && (i+j > -1)) {
+                arr[i+j][c+k] += I1[j][k];
                 if(checkEliminateMatrix()) {
                     i++;
                 }
             }
         }
     } else if(type == 18) {
-        for(int j = 3; j >= 0; j--) {
-            if(!(arr[i][c+j]) && (i+j > -1)) {
-                arr[i][c+j] += I2[0][j];
+        for(int j = 0, k = 3; k >= 0; k--) {
+            if(!(arr[i+j][c+k]) && (i+j > -1)) {
+                arr[i+j][c+k] += I2[j][k];
                 if(checkEliminateMatrix()) {
                     i++;
                 }
@@ -611,202 +599,6 @@ void eliminateLine(int i) {
     }
 }
 
-/*int checkForPlacement(int r, int c, int type) {
-    int j, k;
-    if(type == 1) {
-        tetromino_row = 2;
-        tetromino_col = 3;
-        for(j = 0; j < tetromino_row; j++) {
-            for(k = 0; k < tetromino_col; k++) {
-                if(arr[r+j][c+k] + T1[j][k] > 1) {
-                    return 0;
-                }
-            }
-        }
-    } else if(type == 2) {
-        tetromino_row = 3;
-        tetromino_col = 2;
-        for(j = 0; j < tetromino_row; j++) {
-            for(k = 0; k < tetromino_col; k++) {
-                if(arr[r+j][c+k] + T2[j][k] > 1) {
-                    return 0;
-                }
-            }
-        }
-    } else if(type == 3) {
-        tetromino_row = 2;
-        tetromino_col = 3;
-        for(j = 0; j < tetromino_row; j++) {
-            for(k = 0; k < tetromino_col; k++) {
-                if(arr[r+j][c+k] + T3[j][k] > 1) {
-                    return 0;
-                }
-            }
-        }
-    } else if(type == 4) {
-        tetromino_row = 3;
-        tetromino_col = 2;
-        for(j = 0; j < tetromino_row; j++) {
-            for(k = 0; k < tetromino_col; k++) {
-                if(arr[r+j][c+k] + T4[j][k] > 1) {
-                    return 0;
-                }
-            }
-        }
-    } else if(type == 5) {
-        tetromino_row = 3;
-        tetromino_col = 2;
-        for(j = 0; j < tetromino_row; j++) {
-            for(k = 0; k < tetromino_col; k++) {
-                if(arr[r+j][c+k] + L1[j][k] > 1) {
-                    return 0;
-                }
-            }
-        }
-    } else if(type == 6) {
-        tetromino_row = 2;
-        tetromino_col = 3;
-        for(j = 0; j < tetromino_row; j++) {
-            for(k = 0; k < tetromino_col; k++) {
-                if(arr[r+j][c+k] + L2[j][k] > 1) {
-                    return 0;
-                }
-            }
-        }
-    } else if(type == 7) {
-        tetromino_row = 3;
-        tetromino_col = 2;
-        for(j = 0; j < tetromino_row; j++) {
-            for(k = 0; k < tetromino_col; k++) {
-                if(arr[r+j][c+k] + L3[j][k] > 1) {
-                    return 0;
-                }
-            }
-        }
-    } else if(type == 8) {
-        tetromino_row = 2;
-        tetromino_col = 3;
-        for(j = 0; j < tetromino_row; j++) {
-            for(k = 0; k < tetromino_col; k++) {
-                if(arr[r+j][c+k] + L4[j][k] > 1) {
-                    return 0;
-                }
-            }
-        }
-    } else if(type == 9) {
-        tetromino_row = 3;
-        tetromino_col = 2;
-        for(j = 0; j < tetromino_row; j++) {
-            for(k = 0; k < tetromino_col; k++) {
-                if(arr[r+j][c+k] + J1[j][k] > 1) {
-                    return 0;
-                }
-            }
-        }
-    } else if(type == 10) {
-        tetromino_row = 2;
-        tetromino_col = 3;
-        for(j = 0; j < tetromino_row; j++) {
-            for(k = 0; k < tetromino_col; k++) {
-                if(arr[r+j][c+k] + J2[j][k] > 1) {
-                    return 0;
-                }
-            }
-        }
-    } else if(type == 11) {
-        tetromino_row = 3;
-        tetromino_col = 2;
-        for(j = 0; j < tetromino_row; j++) {
-            for(k = 0; k < tetromino_col; k++) {
-                if(arr[r+j][c+k] + J3[j][k] > 1) {
-                    return 0;
-                }
-            }
-        }
-    } else if(type == 12) {
-        tetromino_row = 2;
-        tetromino_col = 3;
-        for(j = 0; j < tetromino_row; j++) {
-            for(k = 0; k < tetromino_col; k++) {
-                if(arr[r+j][c+k] + J4[j][k] > 1) {
-                    return 0;
-                }
-            }
-        }
-    } else if(type == 13) {
-        tetromino_row = 2;
-        tetromino_col = 3;
-        for(j = 0; j < tetromino_row; j++) {
-            for(k = 0; k < tetromino_col; k++) {
-                if(arr[r+j][c+k] + S1[j][k] > 1) {
-                    return 0;
-                }
-            }
-        }
-    } else if(type == 14) {
-        tetromino_row = 3;
-        tetromino_col = 2;
-        for(j = 0; j < tetromino_row; j++) {
-            for(k = 0; k < tetromino_col; k++) {
-                if(arr[r+j][c+k] + S2[j][k] > 1) {
-                    return 0;
-                }
-            }
-        }
-    } else if(type == 15) {
-        tetromino_row = 2;
-        tetromino_col = 3;
-        for(j = 0; j < tetromino_row; j++) {
-            for(k = 0; k < tetromino_col; k++) {
-                if(arr[r+j][c+k] + Z1[j][k] > 1) {
-                    return 0;
-                }
-            }
-        }
-    } else if(type == 16) {
-        tetromino_row = 3;
-        tetromino_col = 2;
-        for(j = 0; j < tetromino_row; j++) {
-            for(k = 0; k < tetromino_col; k++) {
-                if(arr[r+j][c+k] + Z2[j][k] > 1) {
-                    return 0;
-                }
-            }
-        }
-    } else if(type == 17) {
-        tetromino_row = 4;
-        tetromino_col = 1;
-        for(j = 0; j < tetromino_row; j++) {
-            for(k = 0; k < tetromino_col; k++) {
-                if(arr[r+j][c+k] + I1[j][k] > 1) {
-                    return 0;
-                }
-            }
-        }
-    } else if(type == 18) {
-        tetromino_row = 1;
-        tetromino_col = 4;
-        for(j = 0; j < tetromino_row; j++) {
-            for(k = 0; k < tetromino_col; k++) {
-                if(arr[r+j][c+k] + I2[j][k] > 1) {
-                    return 0;
-                }
-            }
-        }
-    } else if(type == 19) {
-        tetromino_row = 2;
-        tetromino_col = 2;
-        for(j = 0; j < tetromino_row; j++) {
-            for(k = 0; k < tetromino_col; k++) {
-                if(arr[r+j][c+k] + O[j][k] > 1) {
-                    return 0;
-                }
-            }
-        }
-    }
-    return 1;
-}*/
-
 int checkEliminateMatrix() {
     int i;
     for(i = 1; i < row; i++) {
@@ -837,7 +629,6 @@ int main()
 {
     int c;
     string com;
-    lose = 0;
     cin >> row >> col;
     row++; col++;
     while(1) {
@@ -849,45 +640,45 @@ int main()
             break;
         } else {
             cin >> c;
-        }
-        if(com == "T1") {
-            matrixPlacement(c, 1);
-        } else if(com == "T2") {
-            matrixPlacement(c, 2);
-        } else if(com == "T3") {
-            matrixPlacement(c, 3);
-        } else if(com == "T4") {
-            matrixPlacement(c, 4);
-        } else if(com == "L1") {
-            matrixPlacement(c, 5);
-        } else if(com == "L2") {
-            matrixPlacement(c, 6);
-        } else if(com == "L3") {
-            matrixPlacement(c, 7);
-        } else if(com == "L4") {
-            matrixPlacement(c, 8);
-        } else if(com == "J1") {
-            matrixPlacement(c, 9);
-        } else if(com == "J2") {
-            matrixPlacement(c, 10);
-        } else if(com == "J3") {
-            matrixPlacement(c, 11);
-        } else if(com == "J4") {
-            matrixPlacement(c, 12);
-        } else if(com == "S1") {
-            matrixPlacement(c, 13);
-        } else if(com == "S2") {
-            matrixPlacement(c, 14);
-        } else if(com == "Z1") {
-            matrixPlacement(c, 15);
-        } else if(com == "Z2") {
-            matrixPlacement(c, 16);
-        } else if(com == "I1") {
-            matrixPlacement(c, 17);
-        } else if(com == "I2") {
-            matrixPlacement(c, 18);
-        } else if(com == "O") {
-            matrixPlacement(c, 19);
+			if(com == "T1") {
+				matrixPlacement(c, 1);
+			} else if(com == "T2") {
+				matrixPlacement(c, 2);
+			} else if(com == "T3") {
+				matrixPlacement(c, 3);
+			} else if(com == "T4") {
+				matrixPlacement(c, 4);
+			} else if(com == "L1") {
+				matrixPlacement(c, 5);
+			} else if(com == "L2") {
+				matrixPlacement(c, 6);
+			} else if(com == "L3") {
+				matrixPlacement(c, 7);
+			} else if(com == "L4") {
+				matrixPlacement(c, 8);
+			} else if(com == "J1") {
+				matrixPlacement(c, 9);
+			} else if(com == "J2") {
+				matrixPlacement(c, 10);
+			} else if(com == "J3") {
+				matrixPlacement(c, 11);
+			} else if(com == "J4") {
+				matrixPlacement(c, 12);
+			} else if(com == "S1") {
+				matrixPlacement(c, 13);
+			} else if(com == "S2") {
+				matrixPlacement(c, 14);
+			} else if(com == "Z1") {
+				matrixPlacement(c, 15);
+			} else if(com == "Z2") {
+				matrixPlacement(c, 16);
+			} else if(com == "I1") {
+				matrixPlacement(c, 17);
+			} else if(com == "I2") {
+				matrixPlacement(c, 18);
+			} else if(com == "O") {
+				matrixPlacement(c, 19);
+			}
         }
     }
     printMatrix();
