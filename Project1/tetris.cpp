@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <fstream>
 using namespace std;
 int row, col, lose = 0;;
 int tetromino_row, tetromino_col;
@@ -627,19 +628,27 @@ void checkLose() {
 
 int main()
 {
+	ifstream inFile;
+
+    inFile.open("Tetris.data");
+    if (!inFile) {
+        cout << "Unable to open file";
+        exit(1); // terminate with error
+    }
+
     int c;
     string com;
-    cin >> row >> col;
+    inFile >> row >> col;
     row++; col++;
     while(1) {
         if(lose) {
             break;
         }
-        cin >> com;
+        inFile >> com;
         if(com == "End") {
             break;
         } else {
-            cin >> c;
+            inFile >> c;
 			if(com == "T1") {
 				matrixPlacement(c, 1);
 			} else if(com == "T2") {
@@ -681,5 +690,6 @@ int main()
 			}
         }
     }
+	inFile.close();
     printMatrix();
 }
