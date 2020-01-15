@@ -3,7 +3,6 @@
 #include <time.h>
 #include "../include/rules.h"
 #include "../include/algorithm.h"
-#include "../include/board.h"
 
 using namespace std;
 
@@ -13,24 +12,36 @@ public:
     Board_public(){
         ////// Initialize the borad with correct capacity //////
         // The corners of the board
-        cells[0][0].set_capacity(2), cells[0][5].set_capacity(2),
-        cells[4][0].set_capacity(2), cells[4][5].set_capacity(2);
-
-        // The edges of the board
-        cells[0][1].set_capacity(3), cells[0][2].set_capacity(3), cells[0][3].set_capacity(3), cells[0][4].set_capacity(3),
-        cells[1][0].set_capacity(3), cells[2][0].set_capacity(3), cells[3][0].set_capacity(3),
-        cells[1][5].set_capacity(3), cells[2][5].set_capacity(3), cells[3][5].set_capacity(3),
         cells[4][1].set_capacity(3), cells[4][2].set_capacity(3), cells[4][3].set_capacity(3), cells[4][4].set_capacity(3);
+		cells[0][1].set_capacity(3), cells[0][2].set_capacity(3), cells[0][3].set_capacity(3), cells[0][4].set_capacity(3);
+		cells[1][5].set_capacity(3), cells[2][5].set_capacity(3), cells[3][5].set_capacity(3);
+		cells[1][0].set_capacity(3), cells[2][0].set_capacity(3), cells[3][0].set_capacity(3);
+		cells[4][0].set_capacity(2), cells[4][5].set_capacity(2);
+        cells[0][0].set_capacity(2), cells[0][5].set_capacity(2);
+    }
 
+    Board_public(Board board) {
+        int i = 0, j = 0;
+        while(i < ROW) {
+            while(j < COL) {
+                cells[i][j].set_color(board.get_cell_color(i, j));
+                cells[i][j].set_capacity(board.get_capacity(i, j));
+                cells[i][j].set_orbs_num(board.get_orbs_num(i, j));
+                j++;
+            }
+            i++;
+            j = 0;
+        }
     }
 
     bool place_orb(int i, int j, Player * player){
-
+        int temp;
+        char colorPlayer = player->get_color();
         if(index_range_illegal(i, j) || !placement_illegal(*player, cells[i][j])){
-            int temp = cells[i][j].get_orbs_num();
-            temp += 1;
+            temp = cells[i][j].get_orbs_num();
+            temp = temp + 1;
             cells[i][j].set_orbs_num(temp);
-            cells[i][j].set_color(player->get_color());
+            cells[i][j].set_color(colorPlayer);
         }
         else{
             player->set_illegal();
@@ -55,15 +66,18 @@ public:
     }
 
     void add_orb(int i, int j, char color){
-        int orb_num = cells[i][j].get_orbs_num();
-        orb_num ++;
+        int orb_num;
+        orb_num = cells[i][j].get_orbs_num();
+        orb_num = orb_num + 1;
         cells[i][j].set_orbs_num(orb_num);
         cells[i][j].set_color(color);
     }
 
     void cell_reset(int i, int j){
-        cells[i][j].set_orbs_num(0);
-        cells[i][j].set_explode(false);
+        int num = 0;
+        bool f = false;
+        cells[i][j].set_orbs_num(num);
+        cells[i][j].set_explode(f);
         cells[i][j].set_color('w');
     }
 
@@ -72,73 +86,84 @@ public:
         char color = cells[i][j].get_color();
 
         cell_reset(i, j);
+        int right = i + 1;
+        int left = i - 1;
+        int up = j - 1;
+        int down = j + 1;
 
-        if( i + 1 < ROW){
-            add_orb(i+1, j, color);
+        if( right < ROW){
+            add_orb(right, j, color);
         }
 
-        if( j + 1 < COL){
-            add_orb(i, j+1, color);
+        if( down < COL){
+            add_orb(i, down, color);
         }
 
-        if( i - 1 >= 0){
-            add_orb(i-1, j, color);
+        if( left >= 0){
+            add_orb(left, j, color);
         }
 
-        if( j - 1 >= 0){
-            add_orb(i, j-1, color);
+        if( up >= 0){
+            add_orb(i, up, color);
         }
     }
 
     void cell_reaction_marker(){
-
-        // Mark the next cell whose number of orbs is equal to the capacity
-        for(int i = 0; i < ROW; i++){
-                for(int j = 0; j < COL; j++){
-                    cell_is_full(&cells[i][j]);
-                }
+        int i = 0, j = 0;
+        while(i < ROW) {
+            while(j < COL) {
+                cell_is_full(&cells[i][j]);
+                j++;
             }
+            i++;
+            j = 0;
+        }
     }
 
     void cell_chain_reaction(Player player){
-
+        int i = 0, j = 0;
         bool chain_reac = true;
-
         while(chain_reac){
-
             chain_reac = false;
-
-            for(int i = 0; i < ROW; i++){
-                for(int j = 0; j < COL; j++){
+            while(i < ROW) {
+                while(j < COL) {
                     if(cells[i][j].get_explode()){
                         cell_explode(i ,j);
                         chain_reac = true;
                     }
+                    j++;
                 }
+                i++;
+                j = 0;
             }
-
+            i = 0;
             if(win_the_game(player)){
                 return;
             }
-
             cell_reaction_marker();
         }
     }
 
     bool win_the_game(Player player){
-
+        int i = 0, j = 0;
         char player_color = player.get_color();
         bool win = true;
 
-        for(int i = 0; i < ROW; i++){
-            for(int j = 0; j < COL; j++){
-                if(cells[i][j].get_color() == player_color || cells[i][j].get_color() == 'w') continue;
+        while(i < ROW) {
+            while(j < COL) {
+                if(cells[i][j].get_color() == player_color || cells[i][j].get_color() == 'w') {
+                    j++;
+                    continue;
+                }
                 else{
                     win = false;
                     break;
                 }
+                j++;
             }
             if(!win) break;
+            i++;
+            j = 0;
         }
         return win;
     }
@@ -161,9 +186,9 @@ class Point
 public:
     int x, y;
     Point() {}
-    Point(int val1, int val2) {
-        x = val1;
-        y = val2;
+    Point(int value1, int value2) {
+        x = value1;
+        y = value2;
     }
 };
 
@@ -277,6 +302,13 @@ class Queue {
         ListNode<T> *tail;
 };
 
+Pair<Point, int> minmax(Board_public board, int depth, int breadth, Player player);
+int *bestn(Board_public board, Player player);
+int score(Board_public board, Player player);
+Queue<int> chains(Board_public board, Player player);
+Board_public move(Board_public board, Point position, Player currentTurn);
+Queue<Point> neighbour(Point position);
+int critical_mass(Point position);
 /******************************************************
  * In your algorithm, you can just use the the funcitons
  * listed by TA to get the board information.(functions
@@ -296,62 +328,63 @@ class Queue {
  * 3. The function that return the color fo the cell(row, col)
  * 4. The function that print out the current board statement
 *************************************************************************/
-int critical_mass(Point pos) {
-    if((pos.x == 0 && pos.y == 0) || (pos.x == ROW-1 && pos.y == COL-1) || (pos.x == ROW-1 && pos.y == 0) || (pos.x == 0 && pos.y == COL-1)) {
+int critical_mass(Point position) {
+    if((position.x == 0 && position.y == 0) || (position.x == ROW-1 && position.y == COL-1) || (position.x == ROW-1 && position.y == 0) || (position.x == 0 && position.y == COL-1)) {
         return 2;
     }
-    else if(pos.x == 0 || pos.x == ROW-1 || pos.y == 0 || pos.y == COL-1) {
+    else if(position.x == 0 || position.x == ROW-1 || position.y == 0 || position.y == COL-1) {
         return 3;
     } else {
         return 4;
     }
 }
 
-Queue<Point> neighbour(Point pos) {
+Queue<Point> neighbour(Point position) {
     Queue<Point> n;
-    if(index_range_illegal(pos.x, pos.y+1)) {
-        n.push(Point(pos.x, pos.y+1));
+    if(0 <= position.x && position.x < ROW && 0 <= position.y+1 && position.y+1 < COL) {
+        n.push(Point(position.x, position.y+1));
     }
-    if(index_range_illegal(pos.x, pos.y-1)) {
-        n.push(Point(pos.x, pos.y-1));
+    if(0 <= position.x && position.x < ROW && 0 <= position.y-1 && position.y-1 < COL) {
+        n.push(Point(position.x, position.y-1));
     }
-    if(index_range_illegal(pos.x+1, pos.y)) {
-        n.push(Point(pos.x+1, pos.y));
+    if(0 <= position.x+1 && position.x+1 < ROW && 0 <= position.y && position.y < COL) {
+        n.push(Point(position.x+1, position.y));
     }
-    if(index_range_illegal(pos.x-1, pos.y)) {
-        n.push(Point(pos.x-1, pos.y));
+    if(0 <= position.x-1 && position.x-1 < ROW && 0 <= position.y && position.y < COL) {
+        n.push(Point(position.x-1, position.y));
     }
     return n;
 }
 
-Board_public move(Board_public board, Point pos, Player currentTurn) {
-    Board_public board2 = board;
-    board2.place_orb(pos.x, pos.y, &currentTurn);
-    return board2;
+Board_public move(Board_public board, Point position, Player currentTurn) {
+    board.place_orb(position.x, position.y, &currentTurn);
+    return board;
 }
 
 Queue<int> chains(Board_public board, Player player) {
-    Board_public board2 = board;
     Queue<int> lengths;
     char playerColor = player.get_color();
+
     for(int x = 0; x < ROW; x++) {
         for(int y = 0; y < COL; y++) {
-            Point pos = Point(x, y);
-            if((abs(board2.get_orbs_num(pos.x, pos.y)) == critical_mass(pos) - 1) && (board.get_cell_color(x, y) == playerColor)) {
+            Point position = Point(x, y);
+            if((abs(board.get_orbs_num(position.x, position.y)) == (critical_mass(position) - 1)) && (board.get_cell_color(x, y) == playerColor)) {
                 int l = 0;
                 Queue<Point> visiting_stack;
-                visiting_stack.push(pos);
+                visiting_stack.push(position);
                 while(!visiting_stack.empty()) {
+                    position = visiting_stack.front();
                     visiting_stack.pop();
-                    pos = visiting_stack.front();
-                    board2.cell_reset(pos.x, pos.y);
+                    board.cell_reset(position.x, position.y);
                     l += 1;
-                    Queue<Point> n = neighbour(pos);
+                    Queue<Point> n = neighbour(position);
                     while(!n.empty()) {
                         Point i = n.front();
-                        if((abs(board.get_orbs_num(i.x, i.y)) == critical_mass(i) - 1) && (board.get_cell_color(i.x, i.y) == playerColor)) {
+                        n.pop();
+                        if((abs(board.get_orbs_num(i.x, i.y)) == (critical_mass(i) - 1)) && (board.get_cell_color(i.x, i.y) == playerColor)) {
                             visiting_stack.push(i);
                         }
+
                     }
                 }
                 lengths.push(l);
@@ -370,62 +403,66 @@ void algorithm_A(Board board, Player player, int index[]) {
 
     //////////// Random Algorithm ////////////
     // Here is the random algorithm for your reference, you can delete or comment it.
-    srand(time(NULL));
-    int row, col;
-    int color = player.get_color();
-    while(1){
-        row = rand() & 5;
-        col = rand() & 6;
-        if(board.get_cell_color(row, col) == color || board.get_cell_color(row, col) == 'w') break;
-    }
-
-    index[0] = row;
-    index[1] = col;
+    int x, y;
+    Pair<Point, int> best_move;
+    Board_public board_pub(board);
+    best_move = minmax(board_pub, 2, 10, player);
+    x = best_move.first.x;
+    y = best_move.first.y;
+    index[0] = x;
+    index[1] = y;
 }
 
 int score(Board_public board, Player player) {
-    int sc = 0;
-    int my_orbs = 0;
+    int score = 0;
+    int player_orbs = 0;
     int enemy_orbs = 0;
     char playerColor = player.get_color();
+    char enemyColor;
+    if(playerColor == 'r') {
+        enemyColor = 'b';
+    } else {
+        enemyColor = 'r';
+    }
     for(int x = 0; x < ROW; x++) {
         for(int y = 0; y < COL; y++) {
-            Point pos = Point(x, y);
-            if(board.get_cell_color(pos.x, pos.y) == playerColor) {
-                my_orbs += abs(board.get_orbs_num(pos.x, pos.y));
+            Point position = Point(x, y);
+            if(board.get_cell_color(position.x, position.y) == playerColor) {
+                player_orbs += abs(board.get_orbs_num(position.x, position.y));
+                //cout << abs(board.get_orbs_num(position.x, position.y)) << endl;
                 bool flag_not_vulnerable = true;
-                Queue<Point> n = neighbour(pos);
+                Queue<Point> n = neighbour(position);
                 while(!n.empty()) {
                     Point i = n.front();
-                    if(board.get_cell_color(i.x, i.y) != playerColor && abs(board.get_orbs_num(i.x, i.y)) == critical_mass(i) - 1) {
-                        sc -= 5 - critical_mass(i);
+                    n.pop();
+                    if(board.get_cell_color(i.x, i.y) == enemyColor && abs(board.get_orbs_num(i.x, i.y)) == critical_mass(i) - 1) {
+                        score -= 5 - critical_mass(position);
                         flag_not_vulnerable = false;
                     }
                 }
                 if(flag_not_vulnerable) {
-                    if(critical_mass(pos) == 3) {
-                        sc += 2;
+                    if(critical_mass(position) == 3) {
+                        score += 2;
                     }
-                    else if(critical_mass(pos) == 2) {
-                        sc += 3;
+                    else if(critical_mass(position) == 2) {
+                        score += 3;
                     }
-                    if(abs(board.get_orbs_num(pos.x, pos.y)) == critical_mass(pos) - 1) {
-                        sc += 2;
+                    if(abs(board.get_orbs_num(position.x, position.y)) == critical_mass(position) - 1) {
+                        score += 2;
                     }
                 }
             }
             else {
-                enemy_orbs += abs(board.get_orbs_num(x, y));
+                enemy_orbs += abs(board.get_orbs_num(position.x, position.y));
             }
         }
     }
 
-    sc += my_orbs;
-    if(enemy_orbs == 0 && my_orbs > 1) {
+    score += player_orbs;
+    if(enemy_orbs == 0 && player_orbs > 1) {
         return 10000;
     }
-
-    else if(my_orbs == 0 && enemy_orbs > 1) {
+    else if(player_orbs == 0 && enemy_orbs > 1) {
         return -10000;
     }
 
@@ -433,12 +470,11 @@ int score(Board_public board, Player player) {
     while(!c.empty()) {
         int i = c.front();
         if(i > 1) {
-            sc += 2*i;
+            score += 2*i;
         }
         c.pop();
     }
-
-    return sc;
+    return score;
 }
 
 int *bestn(Board_public board, Player player) {
@@ -451,78 +487,97 @@ int *bestn(Board_public board, Player player) {
     char colorPlayer = player.get_color();
     for(int i = 0; i < ROW; i++) {
         for(int j = 0; j < COL; j++) {
-            Point pos = Point(i, j);
-            if(board.get_cell_color(pos.x, pos.y) == colorPlayer || board.get_cell_color(pos.x, pos.y) == 'w') {
-                conf[i*10+j] = score(move(board, pos, player), player);
+            Point position = Point(i, j);
+            if(board.get_cell_color(position.x, position.y) == colorPlayer || board.get_cell_color(position.x, position.y) == 'w') {
+                conf[i*10+j] = score(move(board, position, player), player);
             }
         }
     }
     return conf;
 }
 
-Pair<Point, int> minimax(Board_public board, int depth, int breadth, Player player) {
+Pair<Point, int> minmax(Board_public board, int depth, int breadth, Player player) {
     int i, j, k;
     int *best_moves = bestn(board, player);
-    Point best_pos[breadth];
-    int best_val[breadth];
-    Point best_next_pos;
-    int best_next_val;
+    int best_value[breadth];
+    int value;
+    int best_next_value;
     char playerColor = player.get_color();
     char enemyColor;
+    Point best_position[breadth];
+    Point best_next_position;
+    Pair<Point, int> best_move;
+    Pair<Point, int> ret;
+
     if(playerColor == 'r') {
         enemyColor = 'b';
     } else {
-        enemyColor = 'b';
+        enemyColor = 'r';
     }
 
     i = 0;
     while(i < breadth) {
-        best_pos[i].x = 0;
-        best_pos[i].y = 0;
-        best_val[i] = -10000;
+        best_position[i].x = 0;
+        best_position[i].y = 0;
+        best_value[i] = -10000;
         i++;
     }
 
     i = 0, j = 0, k = breadth-1;
     while(i < 100) {
-        if(i%10 > 5 || i/10 > 4 || board.get_cell_color(i/10, i%10)== enemyColor) continue;
+        if((i%10 > 5 && i/10 > 4) || board.get_cell_color(i/10, i%10)== enemyColor) {
+            i++;
+            continue;
+        }
         while(j < breadth) {
-            if(best_moves[i] > best_val[j]) {
+            if(best_moves[i] > best_value[j]) {
                 while(k >= j+1) {
-                    best_val[k] = best_val[k-1];
-                    best_pos[k].x = best_pos[k-1].x;
-                    best_pos[k].y = best_pos[k-1].y;
+                    //cout << "wew" << endl;
+                    best_value[k] = best_value[k-1];
+                    //cout << best_position[k].x << " " << best_position[k].y << endl;
+                    best_position[k].x = best_position[k-1].x;
+                    //cout << best_position[k].x << endl;
+                    best_position[k].y = best_position[k-1].y;
+                    //cout << best_position[k].y << endl;
                     k--;
                 }
-                best_val[j] = best_moves[i];
-                best_pos[j].x = i/10;
-                best_pos[j].y = i%10;
+                best_value[j] = best_moves[i];
+                best_position[j].x = i/10;
+                best_position[j].y = i%10;
                 break;
             }
             j++;
+            k = breadth-1;
         }
         i++;
+        j = 0;
     }
+
     delete []best_moves;
-    best_next_pos = best_pos[0];
-    best_next_val = score(move(board, best_next_pos, player), player);
+    best_next_position = best_position[0];
+    //cout << best_next_position.x << " " << best_next_position.y << endl;
+    best_next_value = score(move(board, best_next_position, player), player);
+    //cout << best_next_value << endl;
 
     if(depth==1) {
-        Pair<Point, int> ret(best_next_pos, best_next_val);
+        ret.first = best_next_position;
+        ret.second = best_next_value;
         return ret;
     }
     i = 0;
+
     while(i < breadth) {
-        Board_public b_new = move(board, best_pos[i], player);
-        Pair<Point, int> best_move = minimax(b_new, depth-1, breadth, player);
-        int val = best_move.second;
-        if(best_next_val < val) {
-            best_next_val = val;
-            best_next_pos = best_pos[i];
+        Board_public b_new(move(board, best_position[i], player));
+        best_move = minmax(b_new, depth-1, breadth, player);
+        value = best_move.second;
+        if(value > best_next_value) {
+            best_next_value = value;
+            best_next_position = best_position[i];
         }
         i++;
     }
 
-    Pair<Point, int> ret(best_next_pos, best_next_val);
+    ret.first = best_next_position;
+    ret.second = best_next_value;
     return ret;
 }
